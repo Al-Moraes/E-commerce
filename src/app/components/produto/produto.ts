@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
 })
 export class Produto {
   produto = 'Notebook';
-  preco = 5000;
+  preco = 2500;
 }
