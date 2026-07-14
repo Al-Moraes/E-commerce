@@ -2,12 +2,21 @@
     <h3> Produto: {{ produto }}</h3>
     <p> Preço: R$ {{ preco }}</p>
 </div> -->
-<div>
+<!--<div>
     @if (mostrarProduto) {
         <h3>Produto: {{produto}}</h3>
     }
     @if (mostrarPreco) {
     <p>Preço: R$ {{preco}}</p>
     }
+</div> -->
+<div>
+    @for(item of produtos; track item){
+        <div>
+            <h3> {{item.produto | uppercase}}</h3>
+            <p> {{item.preco | precoFormatado}}</p>
+        </div>
+    }
 </div>
+
 
