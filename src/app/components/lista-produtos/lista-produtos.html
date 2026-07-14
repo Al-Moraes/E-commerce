@@ -1,1 +1,6 @@
-<p>lista-produtos works!</p>
+@for (item of produtos; track item) {
+    <app-produto
+    [nome]="item.nome"
+    [preco]="item.preco"
+    ></app-produto>
+}
