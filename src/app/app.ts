@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 //import { RouterOutlet } from '@angular/router'; //Remove importação do RouterOutlet
 //import { Produto } from './components/produto/produto'; //Importa o componente Produto
-import { ListaProdutos } from './components/lista-produtos/lista-produtos';
+import { ListaProdutos } from './features/produtos/lista-produtos/lista-produtos';
 @Component({
   selector: 'app-root',
   imports: [ListaProdutos],
