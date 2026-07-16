@@ -2,8 +2,10 @@
     <app-produto
     [nome]="item.nome"
     [preco]="item.preco"
-    (produtoSelecionado)="exibirProduto($event)"
-    >
+    (produtoSelecionado)="exibirProduto($event)">
     </app-produto>
 }
 <p><button (click)="adicionarProduto()" >Adicionar Produto</button></p>
+<h2>Total de Produtos: {{totalProdutos()}}</h2>
+<h3>Valor Total: {{valorTotal() | precoFormatado}}</h3>
+<p><button (click)="substituirProdutos()" >Substituir Produtos</button></p>
