@@ -1,3 +1,9 @@
+<h2>Produto Selecionado: @if (produtoSelecionado()){
+    <strong style="color:rgba(0, 255, 195, 0.661);">{{produtoSelecionado()}}</strong>
+   }@else {
+    <span style="color:gray;"> Nenhum </span>
+   }
+</h2>
 @for (item of produtos(); track item) {
     <app-produto
     [nome]="item.nome"
