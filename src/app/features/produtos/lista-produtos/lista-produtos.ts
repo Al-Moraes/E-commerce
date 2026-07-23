@@ -5,7 +5,8 @@ import { computed } from '@angular/core';
 import { PrecoFormatadoPipe } from '../../../shared/pipes/preco-formatado-pipe';
 import { effect } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { produtoService } from '../produtos.service';
+import { inject } from '@angular/core';
 
 @Component({
   selector: 'app-lista-produtos',
@@ -27,29 +28,25 @@ export class ListaProdutos {
 
   //! Cria o método para requisição dos produtos
   
+  
   carregarProdutos(){
-    //! Iniciar Loading 
     this.carregando.set(true);
-    this.hhtp.get<{title: string; price: number}[]>
-      ('https://fakestoreapi.com/products')
-      .subscribe({
-        next: (dados) => {
 
-          //!Adapta a API para nosso projeto
-          const produtosFormatados = dados.map(p =>({
-            nome: p.title,
-            preco: p.price
-          }));
-          this.produtos.set(produtosFormatados);
-          this.carregando.set(false); 
-          //? Finaliza Load
-        },
-        error: (erro) =>{
-          console.error ('Error ao carregar produtos: ', erro);
-          this.carregando.set(false); //!Evita loadings Infinitos
-        }
-      });
+    this.produtoService.buscarProdutos().subscribe({
+      next: (dados) => {
+        const produtos= this.produtoService.transformarProdutos(dados);
+        this.produtos.set(produtos);
+        this.carregando.set(false);
+      },
+      error: (erro) => {
+        console.error('Erro ao carregar os Produtos:, ',erro);
+        this.carregando.set(false);
+      },
+    });
   }
+    
+  
+
   
   exibirProduto (nome: string){
     console.log ('Produto Selecionado: ', nome);
@@ -71,10 +68,14 @@ export class ListaProdutos {
         {nome: 'Desktop', preco: 500},
         {nome: 'Headset', preco: 25}
       ]);
+    
     }
+    
+    
+    
     //! injetar httpClient dentro de construct, restruturar construct!!!
     
-    constructor( private hhtp: HttpClient ){
+    constructor(){
       
       //! Carregar a API
       this.carregarProdutos();
@@ -92,15 +93,19 @@ export class ListaProdutos {
         }
       });
     }
+    
     produtoSelecionado = signal<string | null> (null);
+    
     carrinho = signal <{nome: string; preco: number }[]>([]);
     adicionarAocarrinho(produto:{nome:string; preco: number}){
       this.carrinho.update(listaAtual =>
         [...listaAtual, produto]);}
         
     quantidadeCarrinho = computed(() => this.carrinho().length);
+    
     totalCarrinho = computed(() => {
       return this.carrinho().reduce((total, item)=>
         total + item.preco,0);
     });
+private produtoService = inject(produtoService);
 }
