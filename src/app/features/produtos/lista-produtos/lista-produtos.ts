@@ -5,6 +5,7 @@ import { computed } from '@angular/core';
 import { PrecoFormatadoPipe } from '../../../shared/pipes/preco-formatado-pipe';
 import { effect } from '@angular/core';
 import { UpperCasePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-lista-produtos',
@@ -12,14 +13,44 @@ import { UpperCasePipe } from '@angular/common';
   templateUrl: './lista-produtos.html',
   styleUrl: './lista-produtos.css',
 })
+
 export class ListaProdutos {
-  produtos = signal([
-    {nome: 'Teclado Gamer', preco: 149.00},
-    {nome: 'Mouse Gamer', preco: 229.99},
-    {nome: 'Monitor Gamer', preco: 1599.99},
-    {nome: 'Desktop Gamer', preco: 4999.99},
-    {nome: 'Headset Gamer', preco: 699.99}
-  ]);
+
+//! Remove a lista de produtos, dados carregados via API Fakestoreapi
+  produtos = signal <
+  { nome:string; preco: number } []> ([]);
+  
+  //? Cria um estado de carregamento,
+  //** true: requisição em andamento, exibir indicador no templete
+  //! false: esconder indicador e exibir a lista de produtos
+  carregando = signal(true);
+
+  //! Cria o método para requisição dos produtos
+  
+  carregarProdutos(){
+    //! Iniciar Loading 
+    this.carregando.set(true);
+    this.hhtp.get<{title: string; price: number}[]>
+      ('https://fakestoreapi.com/products')
+      .subscribe({
+        next: (dados) => {
+
+          //!Adapta a API para nosso projeto
+          const produtosFormatados = dados.map(p =>({
+            nome: p.title,
+            preco: p.price
+          }));
+          this.produtos.set(produtosFormatados);
+          this.carregando.set(false); 
+          //? Finaliza Load
+        },
+        error: (erro) =>{
+          console.error ('Error ao carregar produtos: ', erro);
+          this.carregando.set(false); //!Evita loadings Infinitos
+        }
+      });
+  }
+  
   exibirProduto (nome: string){
     console.log ('Produto Selecionado: ', nome);
     this.produtoSelecionado.set(nome);
@@ -41,7 +72,14 @@ export class ListaProdutos {
         {nome: 'Headset', preco: 25}
       ]);
     }
-    constructor(){
+    //! injetar httpClient dentro de construct, restruturar construct!!!
+    
+    constructor( private hhtp: HttpClient ){
+      
+      //! Carregar a API
+      this.carregarProdutos();
+      //! Effects continuam iguais 
+      
       effect(() => {
         console.log('Lista de Produtos Alterados: ', this.produtos());
       });
