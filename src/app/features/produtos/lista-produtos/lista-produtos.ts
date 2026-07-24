@@ -18,8 +18,7 @@ import { inject } from '@angular/core';
 export class ListaProdutos {
 
 //! Remove a lista de produtos, dados carregados via API Fakestoreapi
-  produtos = signal <
-  { nome:string; preco: number } []> ([]);
+  produtos = signal < { nome:string; preco: number } []> ([]);
   
   //? Cria um estado de carregamento,
   //** true: requisição em andamento, exibir indicador no templete
@@ -29,8 +28,10 @@ export class ListaProdutos {
   //! Cria o método para requisição dos produtos
   
   
+
   carregarProdutos(){
-    this.carregando.set(true);
+    this.carregando.set(true); //! Ativa Loading
+    this.erro.set(null); //? limpa o erro anterior
 
     this.produtoService.buscarProdutos().subscribe({
       next: (dados) => {
@@ -39,7 +40,8 @@ export class ListaProdutos {
         this.carregando.set(false);
       },
       error: (erro) => {
-        console.error('Erro ao carregar os Produtos:, ',erro);
+        console.error('Erro ao carregar os Produtos:, ', erro);
+        this.erro.set('Erro ao carregar Produtos. Verifique sua conexão e tente novamente!');
         this.carregando.set(false);
       },
     });
@@ -47,7 +49,6 @@ export class ListaProdutos {
     
   
 
-  
   exibirProduto (nome: string){
     console.log ('Produto Selecionado: ', nome);
     this.produtoSelecionado.set(nome);
@@ -72,6 +73,8 @@ export class ListaProdutos {
     }
     
     
+
+
     
     //! injetar httpClient dentro de construct, restruturar construct!!!
     
@@ -93,10 +96,15 @@ export class ListaProdutos {
         }
       });
     }
+   
     
+
     produtoSelecionado = signal<string | null> (null);
     
     carrinho = signal <{nome: string; preco: number }[]>([]);
+
+    erro = signal < string | null > (null);
+    
     adicionarAocarrinho(produto:{nome:string; preco: number}){
       this.carrinho.update(listaAtual =>
         [...listaAtual, produto]);}
@@ -107,5 +115,5 @@ export class ListaProdutos {
       return this.carrinho().reduce((total, item)=>
         total + item.preco,0);
     });
-private produtoService = inject(produtoService);
+    private produtoService = inject(produtoService);
 }
