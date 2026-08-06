@@ -47,10 +47,11 @@
 <h3>Valor Total: {{valorTotal() | precoFormatado}}</h3>
 <!--<p><button (click)="substituirProdutos()" >Substituir Produtos</button></p>-->
 <hr>
+
 <h2>Carrinho</h2>
-@for(item of carrinho(); track $index){
+@for(item of carrinhoService.itens(); track $index){
     <p>{{item.nome | uppercase}} - {{item.preco | precoFormatado}}</p>
 }
-<p><strong>Itens no carrinho: </strong>{{quantidadeCarrinho()}}</p>
-<p><strong>Itens no carrinho: </strong>{{totalCarrinho() | precoFormatado }}</p>
+<p><strong>Itens no carrinho: </strong>{{ carrinhoService.quantidadeItens()}}</p>
+<p><strong>Itens no carrinho: </strong>{{ carrinhoService.totalItens() | precoFormatado }}</p>
 
