@@ -1,11 +1,15 @@
 <section class="acesso-negado">
-<h2>Acesso negado</h2>
+<h2>ACESSO NEGADO</h2>
 
 <p>Você está autenticado, mas não possui permissão para acessar a área administrativa.</p>
 
 <p>Nesta aplicação, apenas usuários com perfil de administrador podem acessar essa rota.</p>
 
-<button type="button" routerLink="/produtos">Voltar para produtos</button>
-<button type="button" routerLink="/login">Sair</button>
+<br>
+<img class="acesso-negado-img" src="imagem-acesso-negado.png" alt="acesso-negado">
+<br>
+
+<button mat-raised-button type="button" routerLink="/produtos">Voltar para produtos</button>
+<button mat-raised-button type="button" (click)="sair()">Sair</button>
 
 </section>
