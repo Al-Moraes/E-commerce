@@ -42,6 +42,7 @@ export const routes: Routes = [
     },
     {
         path: 'carrinho',
+        canActivate:[authGuard],
         loadComponent: () =>
             import('./features/carrinho/carrinho/carrinho').then((m) => m.Carrinho),
     },
@@ -62,6 +63,12 @@ export const routes: Routes = [
         loadComponent: () =>
             import ('./features/admin/admin/admin').then((m) => m.Admin),
     },
+    {
+        path: 'acesso-negado',
+        loadComponent: () =>
+        import('./features/acesso-negado/acesso-negado/acesso-negado').then(m => m.AcessoNegado),
+
+},
     {
         path: '**',
         redirectTo: '',
