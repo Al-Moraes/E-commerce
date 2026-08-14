@@ -67,8 +67,7 @@ export const routes: Routes = [
         path: 'acesso-negado',
         loadComponent: () =>
         import('./features/acesso-negado/acesso-negado/acesso-negado').then(m => m.AcessoNegado),
-
-},
+    },
     {
         path: '**',
         redirectTo: '',
