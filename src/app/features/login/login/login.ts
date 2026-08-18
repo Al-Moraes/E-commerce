@@ -6,7 +6,7 @@ import { FormGroup } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthFacade } from '../../../core/facades/auth.facade';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +17,7 @@ import { AuthService } from '../../../core/services/auth.service';
 
 export class Login {
 
-  private authService = inject(AuthService);
+  private authFacade = inject(AuthFacade);
   private router = inject(Router);
   
   errorlogin = signal(false);
@@ -38,14 +38,14 @@ export class Login {
 
     const email = this.formulario.value.email ?? '';
     const senha = this.formulario.value.senha ?? '';
-    const loginRealizado = this.authService.login(email, senha);
+    const loginRealizado = this.authFacade.realizarLogin(email, senha);
 
     if(!loginRealizado){
       this.errorlogin.set(true);
       return;
     }
 
-    if(this.authService.Admin()){
+    if(this.authFacade.admin()){
       this.router.navigateByUrl('/admin');
       return;
     }
