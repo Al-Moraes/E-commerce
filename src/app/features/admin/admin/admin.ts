@@ -3,7 +3,7 @@ import { computed } from '@angular/core';
 import { inject } from '@angular/core';
 import { signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthFacade } from '../../../core/facades/auth.facade';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
@@ -14,14 +14,14 @@ import { MatButtonModule } from '@angular/material/button';
 })
 
 export class Admin {
-  private authService = inject(AuthService);
+  private authFacade = inject(AuthFacade);
   private router = inject(Router);
 
   totalProdutosCadastrados = signal(20);
   pedidosPendentes = signal(3);
   usuariosCadastrados = signal(8);
 
-  usuarioAtual = this.authService.usuarioAtual;
+  usuarioAtual = this.authFacade.usuarioAtual;
 
   mensagemPerfil = computed(() => {
     const usuario = this.usuarioAtual();
@@ -35,7 +35,7 @@ export class Admin {
 
   sair() {
 
-    this.authService.logout();
+    this.authFacade.sair();
     this.router.navigateByUrl('/login');
   }
 }
