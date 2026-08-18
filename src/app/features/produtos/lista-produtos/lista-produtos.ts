@@ -10,6 +10,7 @@ import { inject } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { CarrinhoFacade } from '../../../core/facades/carrinho.facade';
+import { ItemCarrinho } from '../../../core/models/item-carrinho';
 
 @Component({
   selector: 'app-lista-produtos',
@@ -106,7 +107,7 @@ export class ListaProdutos {
 
     erro = signal < string | null > (null);
     
-    adicionarAocarrinho(produto:{nome:string; preco: number}){
+    adicionarAocarrinho(produto:ItemCarrinho){
       this.carrinhoFacade.adicionarProdutoCarrinho(produto);
     }    
     
