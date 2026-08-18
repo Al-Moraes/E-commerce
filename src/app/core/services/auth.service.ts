@@ -44,10 +44,13 @@ export class AuthService {
     return true;
     }
     logout() {
-this.usuario.set(null);
-this.tokenJwt.set(null);
+    this.usuario.set(null);
+    this.tokenJwt.set(null);
 }
     obterToken():string | null {
-return this.tokenJwt();
+    return this.tokenJwt();
 }    
+    obterPerfil(): PerfilUsuario | null {
+    return this.usuario()?.perfil ?? null
+}
 }
