@@ -9,7 +9,7 @@ import { produtoService } from '../../../core/services/produtos.service';
 import { inject } from '@angular/core';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-import { CarrinhoService } from '../../../core/services/carrinho.service';
+import { CarrinhoFacade } from '../../../core/facades/carrinho.facade';
 
 @Component({
   selector: 'app-lista-produtos',
@@ -107,13 +107,12 @@ export class ListaProdutos {
     erro = signal < string | null > (null);
     
     adicionarAocarrinho(produto:{nome:string; preco: number}){
-      this.carrinhoService.adicionar(produto);
-    }
-    
+      this.carrinhoFacade.adicionarProdutoCarrinho(produto);
+    }    
     
     private produtoService = inject(produtoService);
-    public carrinhoService = inject(CarrinhoService);
+    public carrinhoFacade = inject(CarrinhoFacade);
 
-    quantidadeCarrinho = this.carrinhoService.quantidadeItens;
-    totalCarrinho = this.carrinhoService.totalItens;
+    quantidadeCarrinho = this.carrinhoFacade.quantidadeCarrinho;
+    totalCarrinho = this.carrinhoFacade.totalCarrinho;
 }
