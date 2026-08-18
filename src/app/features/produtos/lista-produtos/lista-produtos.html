@@ -48,10 +48,4 @@
 <!--<p><button (click)="substituirProdutos()" >Substituir Produtos</button></p>-->
 <hr>
 
-<h2>Carrinho</h2>
-@for(item of carrinhoFacade.itensCarrinho(); track $index){
-    <p>{{item.nome | uppercase}} - {{item.preco | precoFormatado}}</p>
-}
-<p><strong>Itens no carrinho: </strong>{{ carrinhoFacade.quantidadeCarrinho()}}</p>
-<p><strong>Itens no carrinho: </strong>{{ carrinhoFacade.totalCarrinho() | precoFormatado }}</p>
 
