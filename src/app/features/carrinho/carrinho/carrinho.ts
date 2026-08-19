@@ -14,7 +14,7 @@ import { PrecoFormatadoPipe } from '../../../shared/pipes/preco-formatado-pipe';
   styleUrl: './carrinho.css',
 })
 export class Carrinho {
-   carrinhoFacade = inject(CarrinhoFacade);
+  public carrinhoFacade = inject(CarrinhoFacade);
   private router = inject(Router);
   private authFacade = inject(AuthFacade);
 
