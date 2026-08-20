@@ -1,23 +1,31 @@
 <h2>Checkout</h2>
 
-@if(compraFinalizada()){
-    <p style="color: green;">Compra finalizada com sucesso!</p>
-    <button type="button" routerLink="/produtos">Voltar para produtos.</button>
-    <button type="button" (click)="sair()">Sair</button>
-}
-
-@if(carrinhoFacade.carrinhoVazio()){
-    <p style="color: red;">Seu carrinho está vazio. Adicione produtos antes de finalizar a compra.</p>
-    <button type="button" routerLink="/produtos">Ver produtos.</button>
-}@else if (!compraFinalizada()) {
-    <section>
-        <h3>Resumo do pedido.</h3>
-        <p><strong>Itens no carrinho: </strong>{{carrinhoFacade.quantidadeCarrinho()}}</p>
-        <p><strong>Total: </strong>{{carrinhoFacade.totalCarrinho() | precoFormatado}}</p>
-        <button type="button" routerLink="/carrinho">Revisar Carrinho</button>
+@if(pedidoFinalizado()){
+    <section class="compra-finalizada">
+        <h3>COMPRA FINALIZADA COM SUCESSO!🙏​</h3>
+        <p><strong>Código: </strong>{{pedidoFinalizado()?.codigo}}</p>
+        <p><strong>Cliente: </strong>{{pedidoFinalizado()?.cliente}}</p>
+        <p><strong>Quantidade: </strong>{{pedidoFinalizado()?.quantidadeItens}}</p>
+        <p><strong>Total: </strong>{{pedidoFinalizado()?.total}}</p>
+        <button type="button" routerLink="/produtos">Voltar para compras.</button>
     </section>
 }
 
+@if(carrinhoFacade.carrinhoVazio() && !pedidoFinalizado()){
+    <section class="carrinho-vazio">
+        <h3>Seu carrinho está vazio.😭​</h3>
+        <p>Adicione produtos antes de finalizar sua compra!</p>
+        <button type="button" routerLink="/produtos">Ver produtos</button>
+    </section>
+}@else if (!pedidoFinalizado()) {
+    <section class="resumo-pedido">
+        <h3>Resumo do pedido</h3>
+        <p><strong>Itens do carrinho: </strong>{{carrinhoFacade.quantidadeCarrinho()}}</p>
+        <p><strong>Total: </strong>{{carrinhoFacade.totalCarrinho() | precoFormatado}}</p>
+        <button type="button" routerLink="/carrinho">Revisar carrinho</button>
+    </section>
+}
+<hr>
 <form [formGroup]="formulario">
 <p><input type="text" formControlName = "nome" placeholder ="Nome"></p>
 
