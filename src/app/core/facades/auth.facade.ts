@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { AuthService } from "../services/auth.service";
 import { inject } from "@angular/core";
+import { AuthService } from "../services/auth.service";
 
 type Login = {
     email:string;
