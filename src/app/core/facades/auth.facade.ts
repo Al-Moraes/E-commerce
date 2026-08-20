@@ -16,7 +16,7 @@ export class AuthFacade {
     usuarioAtual = this.authService.usuarioAtual;
     usuarioLogado = this.authService.usuarioLogado;
     token = this.authService.token;
-    admin = this.authService.Admin;
+    admin = this.authService.admin;
 
     realizarLogin(email:string, senha:string):boolean{
         return this.authService.login(email,senha);
