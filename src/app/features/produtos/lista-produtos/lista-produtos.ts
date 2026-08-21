@@ -11,31 +11,27 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import { CarrinhoFacade } from '../../../core/facades/carrinho.facade';
 import { ItemCarrinho } from '../../../core/models/item-carrinho';
+import { RouterLink } from '@angular/router';
+import { ProdutoLoja } from '../../../core/models/produto-loja';
+
 
 @Component({
   selector: 'app-lista-produtos',
-  imports: [Produto, PrecoFormatadoPipe, UpperCasePipe, MatButtonModule, MatCardModule],
+  imports: [Produto, PrecoFormatadoPipe, UpperCasePipe, MatButtonModule, MatCardModule, RouterLink],
   templateUrl: './lista-produtos.html',
   styleUrl: './lista-produtos.css',
 })
 
 export class ListaProdutos {
 
-//! Remove a lista de produtos, dados carregados via API Fakestoreapi
-  produtos = signal < { nome:string; preco: number } []> ([]);
-  
-  //? Cria um estado de carregamento,
-  //** true: requisição em andamento, exibir indicador no templete
-  //! false: esconder indicador e exibir a lista de produtos
+  produtos = signal < ProdutoLoja []> ([]);
   carregando = signal(true);
-
-  //! Cria o método para requisição dos produtos
-  
-  
+  produtoSelecionado = signal< string | null> (null);   
+  erro = signal < string | null > (null);
 
   carregarProdutos(){
-    this.carregando.set(true); //! Ativa Loading
-    this.erro.set(null); //? limpa o erro anterior
+    this.carregando.set(true);
+    this.erro.set(null); 
 
     this.produtoService.buscarProdutos().subscribe({
       next: (dados) => {
@@ -61,9 +57,12 @@ export class ListaProdutos {
     this.produtos.update(listaAtual => [
       ...listaAtual, {nome:'Processador Intel Core i5 14550FS', preco: 2500}]);
   }
+
+
   totalProdutos = computed (() => this.produtos().length);
-  valorTotal = computed (() => { return this.produtos().reduce
-    ((total, item) => total + item.preco,0)});
+  valorTotal = computed (() => { return this.produtos().reduce((total, item) => total + item.preco,0)});
+  valorTotalFormatado = computed(() => this.valorTotal().toFixed(2));
+  
     
     substituirProdutos (){
       this.produtos.set([
@@ -77,35 +76,18 @@ export class ListaProdutos {
     }
     
     
-
-
-    
-    //! injetar httpClient dentro de construct, restruturar construct!!!
-    
     constructor(){
       
-      //! Carregar a API
       this.carregarProdutos();
-      //! Effects continuam iguais 
       
       effect(() => {
-        console.log('Lista de Produtos Alterados: ', this.produtos());
-      });
-      effect(() => {
-        console.log ('Valor Total atualizado: ', this.valorTotal());
-      });
-      effect(() => {
         if (typeof document !== 'undefined') {
-          document.title = `(${this.totalProdutos()}) Minha Loja `;
+          document.title = `(${this.totalProdutos()}) Minha Loja`;
         }
       });
     }
    
     
-
-    produtoSelecionado = signal< string | null> (null);   
-
-    erro = signal < string | null > (null);
     
     adicionarAocarrinho(produto:ItemCarrinho){
       this.carrinhoFacade.adicionarProdutoCarrinho(produto);
