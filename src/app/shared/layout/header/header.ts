@@ -16,7 +16,8 @@ import { AuthFacade } from '../../../core/facades/auth.facade';
   styleUrl: './header.css',
 })
 export class Header {
-    nomeLoja = 'Lojas Estadunidenses';
+
+    nomeLoja = 'Lojas Estadunidenses';  
 
     private carrinhoService = inject(CarrinhoFacade);
     quantidade = this.carrinhoService.quantidadeCarrinho;
