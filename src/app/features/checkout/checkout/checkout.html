@@ -1,3 +1,7 @@
+<section class="pagina-checkout">
+
+
+
 <h2>Checkout</h2>
 
 @if(pedidoFinalizado()){
@@ -7,42 +11,50 @@
         <p><strong>Cliente: </strong>{{pedidoFinalizado()?.cliente}}</p>
         <p><strong>Quantidade: </strong>{{pedidoFinalizado()?.quantidadeItens}}</p>
         <p><strong>Total: </strong>{{pedidoFinalizado()?.total}}</p>
-        <button type="button" routerLink="/produtos">Voltar para compras.</button>
+        <button mat-raised-button color="primary" type="button" routerLink="/produtos">Voltar para compras.</button>
     </section>
 }
 
 @if(carrinhoFacade.carrinhoVazio() && !pedidoFinalizado()){
     <section class="carrinho-vazio">
-        <h3>Seu carrinho está vazio.😭​</h3>
+        <h3>SEU CARRINHO ESTÁ VAZIO 😡​​</h3>
         <p>Adicione produtos antes de finalizar sua compra!</p>
-        <button type="button" routerLink="/produtos">Ver produtos</button>
+        <button mat-raised-button type="button" routerLink="/produtos">Ver produtos</button>
     </section>
+
+
 }@else if (!pedidoFinalizado()) {
     <section class="resumo-pedido">
         <h3>Resumo do pedido</h3>
         <p><strong>Itens do carrinho: </strong>{{carrinhoFacade.quantidadeCarrinho()}}</p>
         <p><strong>Total: </strong>{{carrinhoFacade.totalCarrinho() | precoFormatado}}</p>
-        <button type="button" routerLink="/carrinho">Revisar carrinho</button>
+        <button mat-raised-button color="primary" type="button" routerLink="/carrinho">Revisar carrinho</button>
     </section>
 }
+
+
+
 <hr>
-<form [formGroup]="formulario">
+<form [formGroup]="formulario" class="form">
+<h3>Finalizar Compra</h3>
+
+
 <p><input type="text" formControlName = "nome" placeholder ="Nome"></p>
 
 
 @if(formulario.get('nome')?.touched && formulario.get('nome')?.invalid){
     @if(formulario.get('nome')?.errors?.['required']){
         <br>
-        <small style="color: red;">O nome é obrigatório.</small>
+        <small>O nome é obrigatório.</small>
     }
 }
 @if(formulario.get('nome')?.errors?.['minlength']){
     <br>
-    <small style="color: red;">O nome deve conter no mínimo 3 caracteres.</small>
+    <small>O nome deve conter no mínimo 3 caracteres.</small>
 }
 @if(formulario.get('nome')?.errors?.['numeroInvalido']){
     <br>
-    <small style="color: red;"> O nome não pode conter números!</small>
+    <small> O nome não pode conter números!</small>
 }
 
 
@@ -51,12 +63,12 @@
 @if(formulario.get('email')?.touched && formulario.get('email')?.invalid){
     @if(formulario.get('email')?.errors?.['required']){
         <br>
-        <small style="color: red;"> O e-mail é obrigatório.</small>
+        <small> O e-mail é obrigatório.</small>
     }
 }
 @if(formulario.get('email')?.errors?.['email']){
     <br>
-    <small style="color: red;">O e-mail deve ser válido.</small>
+    <small>O e-mail deve ser válido.</small>
 }
 
 
@@ -65,16 +77,25 @@
 @if(formulario.get('endereco')?.touched && formulario.get('endereco')?.invalid){
     @if(formulario.get('endereco')?.errors?.['required']){
         <br>
-        <small style="color: red;">O endereço é obrigatório.</small>
+        <small>O endereço é obrigatório.</small>
     }
 }
 @if(formulario.get('endereco')?.errors?.['minlength']){
     <br>
-    <small style="color: red;">O endereço precisa ser detalhado.</small>
+    <small>O endereço precisa ser detalhado.</small>
 }
 
 
 
 <br>
-<button type = "button" (click)="finalizar()" [disabled]="formulario.invalid">Finalizar Compra</button>
+<button mat-raised-button color="primary" type = "button" (click)="finalizar()" [disabled]="formulario.invalid">Finalizar Compra</button>
 </form>
+</section>
+
+
+
+
+
+
+
+
