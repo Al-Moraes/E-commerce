@@ -1,4 +1,60 @@
-<h2>Produto Selecionado: @if (produtoSelecionado()){
+<section class="pagina-produtos">
+   <header class="cabecalho-produtos">
+      <div>
+         <h2>Produtos</h2>
+         <p>Escolha os produtos e adicione-os ao carrinho.</p>
+      </div>
+      <button mat-stroked-button color="primary" type="button" routerLink="/carrinho">Ver carrinho | ({{carrinhoFacade.quantidadeCarrinho()}})</button>
+   </header>
+   
+@if(carregando()){
+    <p>Carregando Produtos...</p>
+ }
+
+ @if (erro()){
+   <section class="mensagem-erro"></section>
+    <p>{{ erro() }}</p>
+    <button mat-stroked-button color="primary" (click)="carregarProdutos()" > Tentar Novamente </button>
+  }
+
+@if(!carregando() && !erro()){
+   <section class="resumo-produtos">
+      <p><strong>Total de produtos: </strong>{{totalProdutos()}}</p>
+      <p><strong>Valor total dos produtos: </strong>R$ {{valorTotalFormatado()}}</p>
+   </section>
+  <hr/> 
+   <section class="grid-produtos">
+      @for (item of produtos(); track $index) {
+         <app-produto
+         [nome] = "item.nome"
+         [preco] = "item.preco"
+         (produtoSelecionado)="exibirProduto($event)"
+         (produtoAdicionado)="adicionarAocarrinho($event)"
+         ></app-produto>
+      }
+   </section>
+}
+<!-- <hr>
+<section class="produto-selecionado">
+   <h3>Produto Selecionado</h3>
+   @if(produtoSelecionado()){
+      <p class="texto-sucesso">
+         <strong>{{produtoSelecionado()}}</strong>
+      </p>
+   }@else {
+      <p class="texto-neutro">
+         <strong>Nenhum Produto selecionado</strong>
+      </p>
+   }
+</section> -->
+
+<br>
+<section class="rodape">
+   <div></div>
+</section>
+    
+
+<!--<h2>Produto Selecionado: @if (produtoSelecionado()){
     <strong style="color:blue;">{{produtoSelecionado()}}</strong>
    }@else {
     <span style="color:rgb(164, 0, 0);"> Nenhum </span>
@@ -6,45 +62,12 @@
 </h2>
 
 
-<h2>Produtos:</h2>
+<h2>Produtos:</h2> -->
 
-<!-- Estado 1: Loading -->
- @if(carregando()){
-    <p>Carregando Produtos...</p>
- }
-
- <!-- Estado 2: Erro -->
-  @if (erro()){
-    <p style = "color: red;">{{ erro() }}</p>
-    <button (click)="carregarProdutos()" > Tentar Novamente </button>
-  }
-  
-  <!-- Estado 3: Sucesso -->
-   
-  @if(!carregando() && !erro()){
-    <p>Total de Produtos: {{ totalProdutos() }}</p>
-    <hr>
-
-    <section class="grid-produtos">
-
-@for(item of produtos();track $index){
-    <app-produto
-    [nome] = "item.nome"
-    [preco] = "item.preco"
-    (produtoSelecionado)="exibirProduto($event)"
-    (produtoAdicionado)="adicionarAocarrinho($event)"
-    
-    ></app-produto>
-    }
-    </section>
-   }
-   <hr>
-
-  
 
 <!--<p><button (click)="adicionarProduto()" >Adicionar Produto</button></p>-->
-<h2>Total de Produtos: {{totalProdutos()}}</h2>
-<h3>Valor Total: {{valorTotal() | precoFormatado}}</h3>
+<!-- <h2>Total de Produtos: {{totalProdutos()}}</h2> -->
+<!--<h3>Valor Total: {{valorTotal() | precoFormatado}}</h3>-->
 <!--<p><button (click)="substituirProdutos()" >Substituir Produtos</button></p>-->
 <hr>
 
